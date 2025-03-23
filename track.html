@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRCTC - Track Your Train</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        :root {
+            --primary: #0052cc;
+            --primary-light: #3a7be8;
+            --secondary: #ff6b35;
+            --light: #f5f7fa;
+            --dark: #1a2b47;
+            --success: #2ecc71;
+            --gray: #6c757d;
+        }
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 82, 204, 0.3);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 82, 204, 0.3);
+        }
+        .track-hero {
+            padding: 8rem 5% 5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 82, 204, 0.1), rgba(255, 107, 53, 0.1));
+        }
+        .track-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .track-hero h1 span {
+            color: var(--primary);
+        }
+        .track-hero p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+        .track-form {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 600px;
+            margin: -3rem auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .form-group label {
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .form-group input {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 2px rgba(0, 82, 204, 0.2);
+        }
+        .submit-btn {
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+        }
+        .train-status {
+            padding: 5rem 5%;
+            background-color: white;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .status-card {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: var(--light);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .status-details h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        .status-details p {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        .status-details .highlight {
+            color: var(--success);
+            font-weight: 500;
+        }
+        .route-map {
+            padding: 5rem 5%;
+            background-color: var(--light);
+        }
+        .map-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .map-placeholder {
+            text-align: center;
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+        .tracking-faqs {
+            padding: 5rem 5%;
+            background-color: white;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .faq-card {
+            background-color: var(--light);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .faq-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 82, 204, 0.1);
+        }
+        .faq-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .faq-card p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .footer-col ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        .footer-bottom {
+            margin-top: 3rem;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        @media (max-width: 992px) {
+            .track-hero {
+                padding-top: 7rem;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: white;
+                flex-direction: column;
+                padding: 2rem;
+                transition: all 0.3s;
+            }
+            .nav-links.active {
+                left: 0;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .status-card {
+                grid-template-columns: 1fr;
+            }
+            .auth-buttons {
+                display: none;
+            }
+        }
+        @media (max-width: 576px) {
+            .track-hero h1 {
+                font-size: 1.8rem;
+            }
+            .track-hero p {
+                font-size: 1rem;
+            }
+            .map-container {
+                height: 300px;
+            }
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s;
+        }
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-delay-1 { transition-delay: 0.2s; }
+        .stagger-delay-2 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C7.58 2 4 5.58 4 10V15.5C4 17.43 5.57 19 7.5 19L6 20.5V21H18V20.5L16.5 19C18.43 19 20 17.43 20 15.5V6C20 3.58 16.42 2 12 2ZM7.5 17C6.67 17 6 16.33 6 15.5C6 14.67 6.67 14 7.5 14C8.33 14 9 14.67 9 15.5C9 16.33 8.33 17 7.5 17ZM11 10H6V6H11V10ZM16.5 17C15.67 17 15 16.33 15 15.5C15 14.67 15.67 14 16.5 14C17.33 14 18 14.67 18 15.5C18 16.33 17.33 17 16.5 17ZM18 10H13V6H18V10Z" fill="#0052cc"/>
+                </svg>
+                <span>IRCTC</span>
+            </div>
+            <div class="menu-toggle">☰</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="booking.html">Booking</a>
+                <a href="trainlist.html">Train List</a>
+                <a href="track.html">Track</a>
+                <a href="hotels.html">Hotels</a>
+                <a href="support.html">Support</a>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn btn-outline">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="track-hero">
+        <h1 class="fade-in">Track Your <span>Train</span> in Real-Time</h1>
+        <p class="fade-in stagger-delay-1">Enter your train details to get live updates on its status and location.</p>
+    </section>
+
+    <section class="track-form fade-in stagger-delay-2">
+        <form id="track-train-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C7.58 2 4 5.58 4 10V15.5C4 17.43 5.57 19 7.5 19L6 20.5V21H18V20.5L16.5 19C18.43 19 20 17.43 20 15.5V6C20 3.58 16.42 2 12 2ZM7.5 17C6.67 17 6 16.33 6 15.5C6 14.67 6.67 14 7.5 14C8.33 14 9 14.67 9 15.5C9 16.33 8.33 17 7.5 17ZM11 10H6V6H11V10ZM16.5 17C15.67 17 15 16.33 15 15.5C15 14.67 15.67 14 16.5 14C17.33 14 18 14.67 18 15.5C18 16.33 17.33 17 16.5 17ZM18 10H13V6H18V10Z" fill="#0052cc"/></svg> Train Number</label>
+                    <input type="text" id="train-number" placeholder="Enter train number" pattern="[0-9]{5}" required>
+                </div>
+                <div class="form-group">
+                    <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM7 10H9V7H7V10ZM15 10H17V7H15V10ZM11 10H13V7H11V10ZM7 12H9V14H7V12ZM15 12H17V14H15V12ZM11 12H13V14H11V12ZM7 16H9V18H7V16ZM15 16H17V18H15V16ZM11 16H13V18H11V16Z" fill="#0052cc"/></svg> Journey Date</label>
+                    <input type="date" id="train-date" min="2025-03-19" required>
+                </div>
+                <div class="submit-btn">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14H14.71L14.43 13.73C15.63 12.33 16.25 10.42 15.91 8.39C15.44 5.61 13.12 3.39 10.32 3.05C6.09 2.53 2.47 6.04 2.95 10.27C3.43 14.5 7.06 18 11.29 18C13.13 18 14.81 17.31 16.17 16.17L16.45 16.45V17.25L19.8 20.59L20.91 19.48L15.5 14ZM11.25 16C8.02 16 5.45 13.22 5.95 10C6.45 6.78 9.47 4.5 12.75 5C15.98 5.5 18.55 8.28 18.05 11.5C17.55 14.72 14.53 16 11.25 16Z" fill="white"/></svg>
+                        Track Train
+                    </button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section class="train-status">
+        <div class="section-title fade-in">
+            <h2>Current Train Status</h2>
+            <p>Live updates for Rajdhani Express (12301) on March 20, 2025.</p>
+        </div>
+        <div class="status-card fade-in stagger-delay-1">
+            <div class="status-details">
+                <h3>Rajdhani Express (12301)</h3>
+                <p><strong>Current Status:</strong> <span class="highlight">On Time</span></p>
+                <p><strong>Last Station:</strong> Kanpur Central (CNB) at 14:30</p>
+                <p><strong>Next Station:</strong> Vadodara Jn (BRC) ETA 18:45</p>
+                <p><strong>Distance Covered:</strong> 850 km of 1,400 km</p>
+                <p><strong>Platform:</strong> Expected at Platform 3</p>
+                <p><strong>Speed:</strong> 110 km/h</p>
+            </div>
+            <div class="status-progress">
+                <svg width="100%" height="200" viewBox="0 0 200 200" style="max-width: 300px; margin: 0 auto; display: block;">
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="#ddd" stroke-width="15"/>
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="var(--primary)" stroke-width="15" stroke-dasharray="340" stroke-dashoffset="150"/>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-size="20" fill="var(--dark)">60%</text>
+                </svg>
+                <p style="text-align: center; margin-top: 1rem; color: var(--gray);">Journey Progress</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="route-map">
+        <div class="section-title fade-in">
+            <h2>Route Map</h2>
+            <img src="mumbai to delhi.jpg">
+        </div>
+    </section>
+
+    <section class="tracking-faqs">
+        <div class="section-title fade-in">
+            <h2>Frequently Asked Questions</h2>
+            <p>Common queries about tracking your train.</p>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-card fade-in">
+                <h3>How accurate is the tracking?</h3>
+                <p>Our tracking uses real-time data from IRCTC systems, updated every few minutes for accuracy.</p>
+            </div>
+            <div class="faq-card fade-in stagger-delay-1">
+                <h3>What if my train is delayed?</h3>
+                <p>You’ll see the latest ETA and delay status here. Check regularly for updates.</p>
+            </div>
+            <div class="faq-card fade-in stagger-delay-2">
+                <h3>Can I track multiple trains?</h3>
+                <p>Currently, track one train at a time. Save this page and enter a new number to switch.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>About IRCTC</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Services</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press & Media</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Travel Info</h3>
+                <ul>
+                    <li><a href="#">Train Timetable</a></li>
+                    <li><a href="#">Fare Rules</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                    <li><a href="#">Travel Insurance</a></li>
+                    <li><a href="#">Holiday Packages</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Customer Service</a></li>
+                    <li><a href="#">File a Complaint</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Designed and Developed - Atharva A Digambar</p>
+            <p>Contact - digambaratharva@gmail.com</p>
+            <p>© 2025 (Redesign of IRCTC)</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form Submission Handler
+        document.getElementById('track-train-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const trainNumber = document.getElementById('train-number').value;
+            const trainDate = document.getElementById('train-date').value;
+            alert(`Tracking Train ${trainNumber} for ${trainDate}`);
+            // In a real app, fetch data from an API and update the status section dynamically
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Fade-in Animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        fadeElements.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

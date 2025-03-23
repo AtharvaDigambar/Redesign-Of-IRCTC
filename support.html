@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - We’re Here to Help</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        :root {
+            --primary: #0052cc;
+            --primary-light: #3a7be8;
+            --secondary: #ff6b35;
+            --light: #f5f7fa;
+            --dark: #1a2b47;
+            --success: #2ecc71;
+            --gray: #6c757d;
+        }
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 82, 204, 0.3);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 82, 204, 0.3);
+        }
+        .hero {
+            padding: 8rem 5% 5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 82, 204, 0.1), rgba(255, 107, 53, 0.1));
+            position: relative;
+        }
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        .hero h1 span {
+            color: var(--primary);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+        .search-box {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 100%;
+            width: 100%;
+            border: 1px solid rgba(0, 82, 204, 0.1);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .form-group label {
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .form-group input, .form-group textarea {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 2px rgba(0, 82, 204, 0.2);
+        }
+        .submit-btn {
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+        }
+        .faqs {
+            padding: 5rem 5%;
+            background-color: white;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .faqs-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        .faq-item:hover {
+            box-shadow: 0 10px 20px rgba(0, 82, 204, 0.1);
+        }
+        .faq-item h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        .faq-item p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        .contact {
+            padding: 5rem 5%;
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+        }
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .contact p {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .footer-col ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        .footer-bottom {
+            margin-top: 3rem;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        @media (max-width: 992px) {
+            .hero {
+                padding-top: 7rem;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: white;
+                flex-direction: column;
+                padding: 2rem;
+                transition: all 0.3s;
+            }
+            .nav-links.active {
+                left: 0;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .auth-buttons {
+                display: none;
+            }
+        }
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s;
+        }
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-delay-1 { transition-delay: 0.2s; }
+        .stagger-delay-2 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM9.5 16.5L16.5 12L9.5 7.5V16.5Z" fill="#0052cc"/>
+                </svg>
+                <span>SupportHub</span>
+            </div>
+            <div class="menu-toggle">☰</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="booking.html">Booking</a>
+                <a href="trainlist.html">Train List</a>
+                <a href="track.html">Track</a>
+                <a href="hotels.html">Hotels</a>
+                <a href="support.html">Support</a>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn btn-outline">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="fade-in">We’re Here to <span>Help</span></h1>
+            <p class="fade-in stagger-delay-1">Get quick answers and support for all your queries with SupportHub.</p>
+            <div class="search-box fade-in stagger-delay-2">
+                <form class="search-form" id="support-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="#0052cc"/></svg> Your Query</label>
+                            <input type="text" id="query" placeholder="What do you need help with?" required>
+                        </div>
+                        <div class="form-group">
+                            <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z" fill="#0052cc"/></svg> Details</label>
+                            <textarea id="details" rows="4" placeholder="Describe your issue" required></textarea>
+                        </div>
+                        <div class="submit-btn">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="white"/></svg>
+                                Submit Query
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="faqs">
+        <div class="section-title fade-in">
+            <h2>Frequently Asked Questions</h2>
+            <p>Find answers to common questions below.</p>
+        </div>
+        <div class="faqs-grid">
+            <div class="faq-item fade-in">
+                <h3> How can I create an IRCTC account login ID?</h3>
+                <p>To create a new IRCTC login ID, visit the official home page of IRCTC. Right below the login box, there is an option to sign up. When you click on it, a registration box will open. Now enter your user ID, password, security question, and preferred language, followed by personal information like name, gender, Aadhaar card number, PAN card number and your residential address. After you enter all the information, click on submit. For the verification of your IRCTC login account, a link will be sent to your registered email ID. Once the registration process is complete you can use your IRCTC account. Watch this video to see all the steps described above.</p>
+            </div>
+            <div class="faq-item fade-in">
+                <h3>Can I change my IRCTC login ID?</h3>
+                <p>Creating your IRCTC login ID is a one-time registration process. Once you have registered, you cannot change your username or the login credentials for the registered email address.</p>
+            </div>
+            <div class="faq-item fade-in">
+                <h3>How can I log into my IRCTC account?</h3>
+                <p>For IRCTC login, open the ixigo app and just log in using your registered username. Next, select the departure and arrival destinations, date of travel, the class you want to travel in, and your traveller details. Then, click on 'Pay Now' to complete the payment. Once it is successful, the app will ask you to enter your password to complete your booking.</p>
+            </div>
+            <div class="faq-item fade-in">
+                <h3>What is the maximum number of IRCTC train tickets one can book at a time?</h3>
+                <p>As per IRCTC, up to 12 bookings are allowed per month and up to 6 seats/berths can be booked per ticket. So, up to 36 tickets can be booked in a month from a single IRCTC User ID.</p>
+            </div>
+            <div class="faq-item fade-in">
+                <h3>How do I cancel the IRCTC train ticket after the train has departed?</h3>
+                <p>If a railway booking is confirmed, it can be cancelled up to 48 hours before the scheduled departure of the train. As per the IRCTC website, tickets booked online cannot be cancelled after the chart has been prepared.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact">
+        <h2 class="fade-in">Contact Us</h2>
+        <p class="fade-in">Need more help? Reach out to our support team anytime.</p>
+        <button class="btn btn-outline fade-in" style="background-color: white; color: var(--primary);">Start Live Chat</button>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>About SupportHub</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Support Services</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Live Chat</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="#">Email Us</a></li>
+                    <li><a href="#">Call Us</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Designed and Developed - Atharva A Digambar</p>
+            <p>Contact - digambaratharva@gmail.com</p>
+            <p>© 2025 (Redesign of IRCTC)</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('support-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = document.getElementById('query').value;
+            const details = document.getElementById('details').value;
+            alert(`Query Submitted: ${query}\nDetails: ${details}`);
+        });
+
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        fadeElements.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
